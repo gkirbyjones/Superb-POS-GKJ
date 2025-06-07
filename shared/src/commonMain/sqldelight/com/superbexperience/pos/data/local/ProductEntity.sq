@@ -1,0 +1,27 @@
+import com.superbexperience.pos.domain.model.ProductId;
+
+
+CREATE TABLE ProductEntity (
+    productId TEXT AS ProductId PRIMARY KEY NOT NULL,
+    name TEXT NOT NULL,
+    price REAL NOT NULL,
+    category TEXT,
+    description TEXT
+);
+
+save:
+INSERT OR REPLACE
+    INTO ProductEntity(
+        productId,
+        name,
+        price,
+        category,
+        description
+    )
+    VALUES (?, ?, ?, ?, ?);
+
+selectAll:
+SELECT * FROM ProductEntity;
+
+selectById:
+SELECT * FROM ProductEntity WHERE productId = ?;
