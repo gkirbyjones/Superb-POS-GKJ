@@ -21,8 +21,14 @@ data class Product(
     val productDescription: String? = null, // not called 'description' to avoid name mangling when presented to Swift
     val category: String? = null,
 ) {
-    init {
+    private val maximumCheapPrice = 100.0
 
+    val isCheap: Boolean
+        get() = price <= maximumCheapPrice
+
+    init {
+        // TODO: consider encapsulating validation in a separate class or function
+        //  report all failing conditions at once instead of throwing on the first failure
         require(name.isNotBlank()) {
             "Product name shouldn't be empty"
         }

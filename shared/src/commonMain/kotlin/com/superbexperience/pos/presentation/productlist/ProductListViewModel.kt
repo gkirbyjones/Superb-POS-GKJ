@@ -80,7 +80,7 @@ class ProductListViewModel(
 
     fun onFilterCategoriesClicked() = updateFilter(ProductFilter.CategoryProducts)
 
-    fun onFilterCheapClicked() = updateFilter(ProductFilter.CheapProducts())
+    fun onFilterCheapClicked() = updateFilter(ProductFilter.CheapProducts)
 
     fun onSearchQueryChanged(query: String) =
         input.update {

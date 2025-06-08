@@ -40,10 +40,15 @@ The app uses the following multiplatform dependencies in its implementation:
 Not used in this example, but also worth investigating for improved Swift interop is [SKIE](https://github.com/touchlab/SKIE)
 
 ### Project Structure
-composeApp: a partial implementation of the app using Jetpack Compose, which is not yet fully functional, but was used to help debug and test the shared code.
-gradle/libs.versions.toml: a file to manage the versions of the dependencies used in the project.
-iosApp: the iOS app, which uses the shared code to display a list of products via SwiftUI.
-shared: the shared Kotlin Multiplatform code, which contains the business logic and data models.
+- composeApp: a partial implementation of the app using Jetpack Compose, which is not yet fully functional, but was used to help debug and test the shared code.
+- gradle/libs.versions.toml: a file to manage the versions of the dependencies used in the project.
+- iosApp: the iOS app, which uses the shared code to display a list of products via SwiftUI.
+- shared: the shared Kotlin Multiplatform code, which contains the business logic and data models.
+  - shared/src/androidMain: any Android-specific code
+  - shared/src/commonMain: primary shared code, including the Product model and business logic
+  - shared/src/commonMain/sqldelight: the SQLDelight database schema and queries
+  - shared/src/commonText: test cases for the common code
+  - shared/src/iosMain: any iOS-specific code
 
 ### App Architecture
 The app implements a Clean Architecture applying MVVM pattern. Navigation is handled by the UI. Implementing Coordinator pattern to manage the navigation flow, would be a good next step.
@@ -55,12 +60,15 @@ The app can be built and run from Android Studio, but it makes more sense to use
 
 ### Next Steps
 The app is a work in progress, and there are many areas that could be improved or extended. Some ideas for next steps include:
-- implement a real API to fetch product data, rather than using a faked data source
+- implement a real API to fetch product data, rather than using a fake data source
+- the repository implementation is very basic and should be improved, for example by scheduling data synchronisation with remote source(s)
 - there are no tests yet, so adding unit tests for the shared code and UI tests for the iOS app is required
 - implement a proper navigation flow using the Coordinator pattern
 - the iOS app UI is very basic and could be improved, for example defining a Layout Guide with centralised styles and colors, font definitions etc
-- the repository implementation is very basic and should be improved, for example by scheduling data synchronisation with remote source(s)
 - error handling is not implemented yet, NOTE: need to consider coroutine cancellation - do not try/catch everything
 - the current requirements are (deliberately) very basic, additional features may challenge assumptions made above.
 - Xcodegen or Tuist could be used to generate the Xcode project, which would make it easier to maintain and share the project structure.
 - update ktlint rules to allow for JetPack Compose code style
+- replace any magic numbers with constants
+- there may be a case for creating a typealias for List<Product> to make the code more readable, e.g. Products = List<Product>
+- alternatively, encapsulate the list in a class, e.g. value(?) class Products(val products: List<Product>), to better track/extend functionality in the future

@@ -5,5 +5,5 @@ sealed interface ProductFilter {
 
     data object CategoryProducts : ProductFilter
 
-    data class CheapProducts(val maxPrice: Double = 100.0) : ProductFilter
+    data object CheapProducts : ProductFilter
 }
