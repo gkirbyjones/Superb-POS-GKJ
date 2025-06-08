@@ -16,7 +16,7 @@ Build a basic iOS app using Swift (SwiftUI preferred) that
 ### Shared Kotlin Multiplatform Module
 Create a Swift-compatible Kotlin Multiplatform module that:
 * Defines a Product model ( name, price, id, optional category or description).
-* Exposes a function like suspend fun getProducts(): List<Product>.
+* Exposes a function like ``suspend fun getProducts(): List<Product>``.
 * Includes basic business logic such as:
   * Sorting by price or name.
   * Filtering out products below a certain price (e.g., < 1.00).
@@ -40,23 +40,27 @@ The app uses the following multiplatform dependencies in its implementation:
 Not used in this example, but also worth investigating for improved Swift interop is [SKIE](https://github.com/touchlab/SKIE)
 
 ### Project Structure
-- composeApp: a partial implementation of the app using Jetpack Compose, which is not yet fully functional, but was used to help debug and test the shared code.
-- gradle/libs.versions.toml: a file to manage the versions of the dependencies used in the project.
-- iosApp: the iOS app, which uses the shared code to display a list of products via SwiftUI.
-- shared: the shared Kotlin Multiplatform code, which contains the business logic and data models.
-  - shared/src/androidMain: any Android-specific code
-  - shared/src/commonMain: primary shared code, including the Product model and business logic
-  - shared/src/commonMain/sqldelight: the SQLDelight database schema and queries
-  - shared/src/commonText: test cases for the common code
-  - shared/src/iosMain: any iOS-specific code
+- ``composeApp``: a partial implementation of the app using Jetpack Compose, which is not yet fully functional, but was used to help debug and test the shared code.
+- ``gradle/libs.versions.toml``: a file to manage the versions of the dependencies used in the project.
+- ``iosApp``: the iOS app, which uses the shared code to display a list of products via SwiftUI.
+- ``shared``: the shared Kotlin Multiplatform code, which contains the business logic and data models.
+  - ``shared/src/androidMain``: any Android-specific code
+  - ``shared/src/commonMain``: primary shared code, including the Product model and business logic
+    - ``data``: repository implementation plus local & remote data sources
+    - ``di``: dependency injection setup using Koin
+    - ``domain``: business logic: including model, use cases and repository interfaces
+    - ``presentation``: viewModels and state management
+  - ``shared/src/commonMain/sqldelight``: the SQLDelight database schema and queries
+  - ``shared/src/commonText``: test cases for the common code
+  - ``shared/src/iosMain``: any iOS-specific code
 
 ### App Architecture
-The app implements a Clean Architecture applying MVVM pattern. Navigation is handled by the UI. Implementing Coordinator pattern to manage the navigation flow, would be a good next step.
+The app implements a Clean Architecture applying MVVM pattern. Navigation is handled by the UI. Implementing a Coordinator (or VIPER) pattern to manage the navigation flow, would be a good next step.
 The shared viewModels expose Kotlin Flow objects to the UI, facilitating implementation of MVI should that be desirable.
 
 ### Running the App
 The [Kotlin documentation](https://kotlinlang.org/docs/home.html) provides a [useful guide](https://kotlinlang.org/docs/multiplatform-mobile-setup.html) to set up an environment for multiplatform development. If you encounter any problems, using [KDoctor](https://github.com/Kotlin/kdoctor) may help identify issues.
-The app can be built and run from Android Studio, but it makes more sense to use Xcode for the iOS app, as it provides a better development experience for SwiftUI.
+The app can be built and run from Android Studio, but it makes more sense to use Xcode for the iOS app, as it provides a better development experience for SwiftUI. The [xcode-kotlin](https://touchlab.co/xcodekotlin) plugin can be used to aid with debugging Kotlin code directly from Xcode.
 
 ### Next Steps
 The app is a work in progress, and there are many areas that could be improved or extended. Some ideas for next steps include:
@@ -70,5 +74,5 @@ The app is a work in progress, and there are many areas that could be improved o
 - Xcodegen or Tuist could be used to generate the Xcode project, which would make it easier to maintain and share the project structure.
 - update ktlint rules to allow for JetPack Compose code style
 - replace any magic numbers with constants
-- there may be a case for creating a typealias for List<Product> to make the code more readable, e.g. Products = List<Product>
-- alternatively, encapsulate the list in a class, e.g. value(?) class Products(val products: List<Product>), to better track/extend functionality in the future
+- there may be a case for creating a typealias for List<Product> e.g. ``typealias ProductList = List<Product>``
+- alternatively, encapsulate the list in a class, e.g. ``value(?) class Products(val products: List<Product>)``, to better track/extend functionality in the future
